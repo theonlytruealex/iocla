@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
+
 #include "pixel.h"
 
 /*
@@ -15,7 +16,21 @@
  * linia n - 1, etc.
  */
 
-void reversePic(Picture *pic);
+void reversePic(Picture *pic) {
+  Pixel line[pic->width];
+  int i, j;
+  for (i = 0; i <= pic->height / 2 - 1; i++) {
+    for (j = 0; j < pic->width; j++) {
+      line[j] = pic->pix_array[i][j];
+    }
+    for (j = 0; j < pic->width; j++) {
+      pic->pix_array[i][j] = pic->pix_array[pic->height - i - 1][j];
+    }
+    for (j = 0; j < pic->width; j++) {
+      pic->pix_array[pic->height - i - 1][j] = line[j];
+    }
+  }
+}
 
 /*
  * TODO b
@@ -27,7 +42,16 @@ void reversePic(Picture *pic);
  * p.b = 0.11 * p.b;
  */
 
-void colorToGray(Picture *pic);
+void colorToGray(Picture *pic) {
+  int i, j;
+  for (i = 0; i < pic->height; i++) {
+    for (j = 0; j < pic->width; j++) {
+      pic->pix_array[i][j].B = 0.11 * pic->pix_array[i][j].B;
+      pic->pix_array[i][j].R = 0.3 * pic->pix_array[i][j].R;
+      pic->pix_array[i][j].G = 0.59 * pic->pix_array[i][j].G;
+    }
+  }
+}
 
 /*
  * Structura unui pixel, cea a unei imagini, precum si generarea acestora
@@ -39,18 +63,19 @@ void colorToGray(Picture *pic);
  * urmata de printPicture pentru a vedea daca se obtine rezultatul dorit.
  */
 
-int main(void)
-{
-	int height, width;
+int main(void) {
+  int height, width;
 
-	scanf("%d%d", &height, &width);
-	Pixel **pix_array = generatePixelArray(height, width);
-	Picture *pic = generatePicture(height, width, pix_array);
+  scanf("%d%d", &height, &width);
+  Pixel **pix_array = generatePixelArray(height, width);
+  Picture *pic = generatePicture(height, width, pix_array);
+  printPicture(pic);
+  reversePic(pic);
+  printPicture(pic);
+  colorToGray(pic);
+  printPicture(pic);
+  freePicture(&pic);
+  freePixelArray(&pix_array, height, width);
 
-	printPicture(pic);
-
-	freePicture(&pic);
-	freePixelArray(&pix_array, height, width);
-
-	return 0;
+  return 0;
 }
