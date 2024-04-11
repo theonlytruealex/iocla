@@ -18,15 +18,21 @@ main:
     mov ebp, esp
 
     ; Multiplication for db
-    mov al, byte [num1]
-    mov bl, byte [num2]
+    mov al,  [num1]
+    mov bl,  [num2]
     mul bl
 
     ; Print result in hexa
     PRINTF32 `Rezultatul este: 0x%hx\n\x0`, eax
-
-
-   ; TODO: Implement multiplication for dw and dd data types.
+    mov ax, word [num1_w]
+    mov bx, word [num2_w]
+    mul bx
+    PRINTF32 `Rezultatul este: 0x%hx%hx\n\x0`, edx, eax
+    xor eax, eax
+    mov eax, [num1_d]
+    mov ebx, [num2_d]
+    mul ebx
+    PRINTF32 `Rezultatul este: 0x%x%x\n\x0`, edx, eax
 
     leave
     ret
