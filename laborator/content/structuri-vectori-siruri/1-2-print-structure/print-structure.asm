@@ -51,13 +51,15 @@ main:
     call printf
     add esp, 8
 
-    movzx eax, byte [sample_student + age]
+    movzx eax,  byte [sample_student + age]
+    mov eax, 22
     push eax
     push format_age
     call printf
     add esp, 8
 
     lea eax, [sample_student + group]
+    mov [eax + 2], byte '3'
     push eax
     push format_group
     call printf
@@ -70,6 +72,7 @@ main:
     add esp, 8
 
     movzx eax, word [sample_student + birth_year]
+    mov eax, 1993
     push eax
     push format_year
     call printf
