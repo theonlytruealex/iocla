@@ -18,6 +18,22 @@ main:
 
     PRINTF32 `Reversed array: \n\x0`
     xor ecx, ecx
+read_array:
+    mov edx, [input + 4 * ecx]
+    push edx
+    inc ecx
+    cmp ecx, ARRAY_LEN
+    jb read_array
+
+    xor ecx, ecx
+reverse_array:
+    pop edx
+    mov [output + 4 * ecx], edx
+    inc ecx
+    cmp ecx, ARRAY_LEN
+    jb reverse_array
+    
+    xor ecx, ecx
 print_array:
     mov edx, [output + 4 * ecx]
     PRINTF32 `%d\n\x0`, edx
